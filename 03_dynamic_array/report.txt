@@ -1,0 +1,36 @@
+0. Задание.
+Оцените меры сложности для этих двух методов (для функций insert и delete)
+
+1. Выполнение задания.
+
+1.1. Оценка insert.
+
+    def insert(self, i, itm):
+        if i < 0 or i > self.count:                        # Сложность О(1)
+            raise IndexError('Index is out of bounds')     # Сложность О(1)
+        if self.count == self.capacity:                    # Сложность О(1)
+            self.resize(2*self.capacity)                   # Сложность О(N-1) (в функции resize для копирования цикл по всему массиву, за вычетом нового элемента)
+        if i == self.count:                                # Сложность О(1)
+            self.array[self.count] = itm                   # Сложность О(1)
+        else:
+            for pos in range(self.count, i, -1):           # Сложность О(N-1) (если i=0, то для сдвига цикл по всему массиву, за вычетом нового элемента)
+                self.array[pos] = self.array[pos-1]        # Сложность О(1)
+            self.array[i] = itm                            # Сложность О(1)
+        self.count += 1                                    # Сложность О(1)
+
+Итого: для последовательных операций остаются операции с максимальной сложностью (откидываем О(1)),
+далее оставшиеся О(N-1) + О(N-1) дают в пределе сложность О(N).
+
+1.2. Оценка delete.
+
+    def delete(self, i):
+        if i < 0 or i >= self.count:                       # Сложность О(1)
+            raise IndexError('Index is out of bounds')     # Сложность О(1)
+        for pos in range(i, self.count - 1):               # Сложность О(N) (если i=0, то для сдвига цикл по всему массиву, за вычетом удаляемого элемента)
+            self.array[pos] = self.array[pos+1]            # Сложность О(1)
+        self.count -= 1                                    # Сложность О(1)
+        if self.capacity > 16 and self.count < (new_size:=int(self.capacity/1.5)):       # Сложность О(1)
+            self.resize(16 if new_size <= 16 else new_size)   # Сложность О(N) (в функции resize для копирования цикл по всему массиву, за вычетом удаляемого элемента)
+
+Итого: для последовательных операций остаются операции с максимальной сложностью (откидываем О(1)),
+далее оставшиеся О(N) + О(N) дают в пределе сложность О(N).
