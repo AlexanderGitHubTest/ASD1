@@ -49,10 +49,14 @@ class DynArray:
         self.count += 1
 
     def delete(self, i):
+        # Minimum buffer fill percentage
+        MINIMUM_BUFFER_FILL_PERCENTAGE = 50
+        # How much do I need to reduce the buffer
+        HOW_MUCH_REDUCE_BUFFER = 1.5
         if i < 0 or i >= self.count:
             raise IndexError('Index is out of bounds')
         for pos in range(i, self.count - 1):
             self.array[pos] = self.array[pos+1]
         self.count -= 1
-        if self.capacity > 16 and self.count < (new_size:=int(self.capacity/1.5)):
-            self.resize(16 if new_size <= 16 else new_size)
+        if self.capacity > 16 and self.count < int(self.capacity * MINIMUM_BUFFER_FILL_PERCENTAGE / 100):
+            self.resize(16 if (new_size:= int(self.capacity / HOW_MUCH_REDUCE_BUFFER)) <= 16 else new_size)
