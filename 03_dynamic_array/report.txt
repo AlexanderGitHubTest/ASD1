@@ -36,6 +36,5 @@
         if self.capacity > 16 and self.count < int(self.capacity * MINIMUM_BUFFER_FILL_PERCENTAGE / 100):      # Сложность О(1)
             self.resize(16 if (new_size:= int(self.capacity / HOW_MUCH_REDUCE_BUFFER)) <= 16 else new_size)    # Сложность О(N) (в функции resize для копирования цикл по всему массиву, за вычетом удаляемого элемента)
 
-
 Итого: для последовательных операций остаются операции с максимальной сложностью (откидываем О(1)),
 далее оставшиеся О(N) + О(N) дают в пределе сложность О(N).
