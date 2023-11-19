@@ -37,10 +37,19 @@ class PowerSet():
         return False    
 
     def remove(self, value):
-        if not (index := self.HT.find(value)) is None:
-            self.HT.slots[index] = None
-            return True
-        return False    
+        if (index := self.HT.find(value)) is None:
+            return False    
+        self.HT.slots[index] = None
+        next_elem_index = (index + self.HT.step) % self.HT.size
+        for _ in range(self.HT.size - 1):
+            if self.HT.slots[next_elem_index] is None:
+                break
+            if self.HT.seek_slot(self.HT.slots[next_elem_index]) == index:
+                self.HT.slots[index] = self.HT.slots[next_elem_index]
+                self.HT.slots[next_elem_index] = None
+                index = next_elem_index
+            next_elem_index = (next_elem_index + self.HT.step) % self.HT.size
+        return True
 
     def intersection(self, set2):
         result = PowerSet()
